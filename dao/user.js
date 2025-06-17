@@ -20,11 +20,23 @@ class UserDAO {
    */
   async findById(id) {
     try {
-      const user = db("users").select().where(id);
-      return user;
+      const user = db("users").select().where({ id }).first();
+      return user || null;
     } catch (error) {
       console.error("User DAO find by id:", error);
     }
+  }
+
+  /**
+   *
+   * @param {string} email
+   * @returns {Object} - The user data
+   */
+  async findByEmail(email) {
+    try {
+      const user = db("users").select().where({ email }).first();
+      return user || null;
+    } catch (error) {}
   }
 
   /**
@@ -33,9 +45,9 @@ class UserDAO {
    * @param {string} email
    * @param {string} phone
    */
-  async insert(name, email, phone) {
+  async insert(name, email, phone, password) {
     try {
-      const result = await db("users").insert({ name, email, phone });
+      const result = await db("users").insert({ name, email, phone, password });
       return result;
     } catch (error) {
       console.error("USER DAO insert:", error);
